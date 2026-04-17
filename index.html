@@ -25,22 +25,22 @@
     const surveyB = "https://naer.surveycake.biz/s/v2xw6";
 
     function assignSurvey() {
-        // 紀錄在瀏覽器，防止重複整理頁面後跳到另一卷
-        let assigned = localStorage.getItem('naer_survey_assignment');
-        
-        if (!assigned) {
-            // 隨機分配 A 或 B
-            assigned = Math.random() < 0.5 ? 'A' : 'B';
-            localStorage.setItem('naer_survey_assignment', assigned);
-        }
+        // 【完全隨機邏輯】
+        // 每次載入頁面時，直接生成 0~1 之間的隨機數
+        // 不讀取也不寫入任何瀏覽器紀錄 (localStorage/sessionStorage)
+        const assigned = Math.random() < 0.5 ? 'A' : 'B';
 
         const targetUrl = (assigned === 'A') ? surveyA : surveyB;
         
-        // 更新手動連結並跳轉
+        // 更新手動連結（備援用）
         document.getElementById('manual-link').href = targetUrl;
+
+        // 執行跳轉：使用 replace 確保使用者按「回上一頁」時，
+        // 不會卡在「正在分配」的轉圈圈畫面，而是會直接跳過它。
         window.location.replace(targetUrl);
     }
 
+    // 進入網頁立即執行
     assignSurvey();
 </script>
 
