@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進入施測系統...</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; margin: 0; }
+        .loading-box { text-align: center; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 2s linear infinite; margin: 10px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="loading-box">
+    <div class="loader"></div>
+    <h3>正在為您分配試卷，請稍候...</h3>
+    <p style="color: #666;">如果頁面沒有自動跳轉，請 <a id="manual-link" href="#">點擊此處</a></p>
+</div>
+
+<script>
+    // 您的試卷連結
+    const surveyA = "https://naer.surveycake.biz/s/we80O";
+    const surveyB = "https://naer.surveycake.biz/s/v2xw6";
+
+    function assignSurvey() {
+        // 紀錄在瀏覽器，防止重複整理頁面後跳到另一卷
+        let assigned = localStorage.getItem('naer_survey_assignment');
+        
+        if (!assigned) {
+            // 隨機分配 A 或 B
+            assigned = Math.random() < 0.5 ? 'A' : 'B';
+            localStorage.setItem('naer_survey_assignment', assigned);
+        }
+
+        const targetUrl = (assigned === 'A') ? surveyA : surveyB;
+        
+        // 更新手動連結並跳轉
+        document.getElementById('manual-link').href = targetUrl;
+        window.location.replace(targetUrl);
+    }
+
+    assignSurvey();
+</script>
+
+</body>
+</html>
